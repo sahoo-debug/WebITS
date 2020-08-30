@@ -1,0 +1,95 @@
+<div style="margin-top: 50px;" >
+    <ng-container *ngFor="let stepid of steps">
+      <ng-container *ngIf="stepid == 1 else other">
+        <button type="button" class="btn btn-primary btn-arrow-right" (click)="selectStep(stepid)"
+        [ngStyle] ="{'background-color':currentStep == stepid ? '#3f51b5' : '#007bff'}">Step{{stepid}} </button>
+      </ng-container>
+      <ng-template #other>
+        <div class="btn btn-primary btn-arrow-right" [ngStyle] ="{'background-color':currentStep == stepid ? '#3f51b5' : '#007bff'}">
+          <span (click)="selectStep(stepid)">Step{{stepid}}</span> &nbsp;&nbsp;
+          <button type="button" class="close" (click)="removeStep(stepid)"> - </button>
+        </div>
+      </ng-template>     
+    </ng-container>
+    <button type="button" class="btn btn-primary btn-arrow-right" (click)=saveStep()><strong>  + </strong> </button>
+</div>
+<div class="row" style="margin-top: 30px;">
+  <div class="col"></div>
+        <div class="col">
+            <div class="float-right">
+              <button type="button" class="btn btn-primary" (click)="clearItem()">Add New Item</button>
+            </div>
+        </div>
+  </div>
+  <div class="container" style="margin-top: 20px;" *ngFor="let item of itemList;let i=index">
+    <ng-container>
+      <div class="btn btn-primary"  [ngStyle] ="{'background-color':currentItem == item.itemId ? '#3f51b5' : '#007bff'}">
+        <span (click)="selectItem(item.itemId)">Item {{i+1}}</span> &nbsp;&nbsp;
+        <button type="button" class="close" (click)="removeItem(item.itemId)"> - </button>
+      </div>
+      <hr class="hr1">
+      <div class="form-group row"> 
+           <div class="col-sm-2">
+             Title:
+           </div>
+           <div class="col-sm-6">
+              {{item.title}}
+           </div>
+      </div>
+      <div class="form-group row"> 
+        <div class="col-sm-2">
+          Description:
+        </div>
+        <div class="col-sm-6">
+          {{item.description}}
+        </div>
+   </div>
+    </ng-container>
+  </div>
+
+
+
+  <div class="container" style="margin-top: 30px;">
+    <form [formGroup]="itemForm" class="form-horizontal" autocomplete="off" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+          <div class="col-sm-9">
+            <div class="form-group row">
+              <div class="col-sm-4">
+                <strong>Title:</strong>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" required formControlName="Title"   
+                id="Title" placeholder="Enter Title" maxlength="50">
+                <span class="text-danger" *ngIf="itemForm.controls['Title'].invalid && itemForm.controls['Title'].touched && itemForm.pristine">
+                  alpha numeric allowed
+                </span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-4">
+                <label class="control-label " for="Description"> <strong>Description:</strong></label>
+              </div>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" required formControlName="Description"
+                id="Description" placeholder="Enter Description" maxlength="100">
+                <span class="text-danger" *ngIf="itemForm.controls['Description'].invalid && itemForm.controls['Description'].touched">
+                  alpha numeric allowed
+                </span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-primary" [disabled]="this.currentStep === this.steps[0]" (click)="findStep(0)"> Previous </button>
+              </div>
+              <div class="col-sm-4">
+                <button type="button" class="btn btn-primary float-right" [disabled]="this.currentStep === this.steps[this.steps.length-1]" (click)="findStep(1)"> Next </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button type="submit" [disabled]="!itemForm.valid" class="btn btn-primary">{{saveButton}}</button>
+          </div>
+      </div>
+    </form>
+  </div>
