@@ -6,7 +6,8 @@ import {Item} from '../Models/item';
   providedIn: 'root'
 })
 export class StepItemService {
-  private baseUrl:string="https://localhost:44352/api/";
+  private baseUrl:string="https://localhost:5001/api/";
+  //private baseUrl:string="https://itsappservice.azurewebsites.net/api/";
   private headers = { 'content-type': 'application/json'};
   constructor(private http:HttpClient) { }
 
